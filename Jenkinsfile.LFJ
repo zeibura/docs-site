@@ -17,7 +17,7 @@ docker.image('jackjiaibm/zowe-jenkins-base:snapshot').inside('-u root -v /var/ru
   // ============================== constants ==============================
   def GITHUB_REPOSITORY = 'zowe/docs-site'
   def isMasterBranch = env.BRANCH_NAME == 'master'
-  def isReleaseBranch = env.BRANCH_NAME ==~ /^v[0-9]+\.[0-9]+\.[0-9x]+$/
+  def isReleaseBranch = env.BRANCH_NAME ==~ /^v[0-9]+\.([0-9]+\.[0-9]+|[0-9]+\.x|x)$/
 
   // ============================== variables ==============================
   // If run the publish step. Only take effect when building on "master" and 
@@ -105,7 +105,8 @@ docker.image('jackjiaibm/zowe-jenkins-base:snapshot').inside('-u root -v /var/ru
       sh "PUBLISH_TARGET_PATH=${publishTargetPath} " +
           "NODE_OPTIONS=--max_old_space_size=3072 " +
           "npm run docs:build"
-    }
+    },
+    timeout: [time: 30, unit: 'MINUTES']
   )
 
   pipeline.test(
@@ -114,15 +115,14 @@ docker.image('jackjiaibm/zowe-jenkins-base:snapshot').inside('-u root -v /var/ru
       // list all files generated
       sh "find .deploy | grep -v '.deploy/.git'"
       // check broken links
-      timeout(30) {
-        if (FULL_SITE_LINKS_CHECK) {
-          sh 'npm run test:links'
-        } else {
-          sh "npm run test:links -- --start-point /${publishTargetPathConverted}/"
-        }
+      if (FULL_SITE_LINKS_CHECK) {
+        sh 'npm run test:links'
+      } else {
+        sh "npm run test:links -- --start-point /${publishTargetPathConverted}/"
       }
     },
-    allowMissingJunit : true
+    allowMissingJunit : true,
+    timeout: [time: 40, unit: 'MINUTES']
   )
 
   pipeline.createStage(
@@ -141,7 +141,7 @@ docker.image('jackjiaibm/zowe-jenkins-base:snapshot').inside('-u root -v /var/ru
       echo 'Cleaning up .deploy/.pdf ...'
       sh 'rm -fr .deploy/.pdf || true'
     },
-    timeout: [time: 20, unit: 'MINUTES']
+    timeout: [time: 40, unit: 'MINUTES']
   )
 
   // define we need publish stage
@@ -150,6 +150,7 @@ docker.image('jackjiaibm/zowe-jenkins-base:snapshot').inside('-u root -v /var/ru
       return allowPublishing && RUN_PUBLISH
     },
     operation: {
+      githubDeploy.command('git status')
       githubDeploy.commit("deploy from ${env.JOB_NAME}#${env.BUILD_NUMBER}")
       githubDeploy.push()
     }
