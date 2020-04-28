@@ -109,9 +109,10 @@ docker.image('jackjiaibm/zowe-jenkins-base:snapshot').inside('-u root -v /var/ru
     timeout: [time: 30, unit: 'MINUTES']
   )
 
-  pipeline.test(
-    name          : 'Broken Links',
-    operation         : {
+  pipeline.createStage(
+    name          : 'Test Broken Links',
+    isSkippable   : true,
+    operation     : {
       // list all files generated
       sh "find .deploy | grep -v '.deploy/.git'"
       // check broken links
@@ -121,17 +122,15 @@ docker.image('jackjiaibm/zowe-jenkins-base:snapshot').inside('-u root -v /var/ru
         sh "npm run test:links -- --start-point /${publishTargetPathConverted}/"
       }
     },
-    allowMissingJunit : true,
-    timeout: [time: 40, unit: 'MINUTES']
+    timeout: [time: 60, unit: 'MINUTES']
   )
 
   pipeline.createStage(
     name          : "Generate PDF",
     isSkippable   : true,
     stage         : {
-      timeout(time: 1, unit: 'HOURS') {
-        sh 'npm run docs:pdf'
-      }
+      sh 'npm run docs:pdf'
+
       if (fileExists('.deploy/.pdf/out/Zowe_Documentation.pdf')) {
         sh "cp .deploy/.pdf/out/Zowe_Documentation.pdf .deploy/${publishTargetPathConverted}/"
       } else {
@@ -141,7 +140,7 @@ docker.image('jackjiaibm/zowe-jenkins-base:snapshot').inside('-u root -v /var/ru
       echo 'Cleaning up .deploy/.pdf ...'
       sh 'rm -fr .deploy/.pdf || true'
     },
-    timeout: [time: 40, unit: 'MINUTES']
+    timeout: [time: 60, unit: 'MINUTES']
   )
 
   // define we need publish stage
