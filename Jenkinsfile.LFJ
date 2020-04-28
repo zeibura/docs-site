@@ -112,7 +112,7 @@ docker.image('jackjiaibm/zowe-jenkins-base:snapshot').inside('-u root -v /var/ru
   pipeline.createStage(
     name          : 'Test Broken Links',
     isSkippable   : true,
-    operation     : {
+    stage         : {
       // list all files generated
       sh "find .deploy | grep -v '.deploy/.git'"
       // check broken links
