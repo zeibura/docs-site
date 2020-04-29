@@ -144,12 +144,14 @@ docker.image('jackjiaibm/zowe-jenkins-base:snapshot').inside('-u root -v /var/ru
   )
 
   // define we need publish stage
-  pipeline.publish(
+  pipeline.createStage(
+    name          : "Publish",
+    isSkippable   : true,
     shouldExecute : {
       return allowPublishing && RUN_PUBLISH
     },
-    operation: {
-      githubDeploy.command('git status')
+    stage         : {
+      echo githubDeploy.command('git status')
       githubDeploy.commit("deploy from ${env.JOB_NAME}#${env.BUILD_NUMBER}")
       githubDeploy.push()
     }
