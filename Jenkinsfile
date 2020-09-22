@@ -176,6 +176,10 @@ node ('ibm-jenkins-slave-dind') {
       }
     }
 
+    stage('Changelog') {
+      sh '01-changelog.sh'
+    }
+
     utils.conditionalStage('publish', allowPublishing && params.RUN_PUBLISH) {
       ansiColor('xterm') {
         withCredentials([usernamePassword(
