@@ -177,7 +177,7 @@ node ('ibm-jenkins-slave-dind') {
     }
 
     stage('Changelog') {
-      sh '01-changelog.sh'
+      sh 'scripts/01-changelog.sh'
     }
 
     utils.conditionalStage('publish', allowPublishing && params.RUN_PUBLISH) {
