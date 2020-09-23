@@ -180,7 +180,7 @@ node ('ibm-jenkins-slave-dind') {
       sh 'scripts/01-changelog.sh'
     }
 
-    utils.conditionalStage('publish', allowPublishing && params.RUN_PUBLISH) {
+    /*utils.conditionalStage('publish', allowPublishing && params.RUN_PUBLISH) {
       ansiColor('xterm') {
         withCredentials([usernamePassword(
           credentialsId: params.GITHUB_CREDENTIALS,
@@ -195,9 +195,9 @@ node ('ibm-jenkins-slave-dind') {
           """
         }
       }
-    }
+    }*/
 
-    stage('done') {
+    /*stage('done') {
       // send out notification
       // slackSend channel: slackChannel,
       //           color: 'good',
@@ -211,7 +211,7 @@ node ('ibm-jenkins-slave-dind') {
             [$class: 'DevelopersRecipientProvider'],
             [$class: 'UpstreamComitterRecipientProvider']
           ]
-    }
+    }*/
 
   } catch (err) {
     currentBuild.result = 'FAILURE'
