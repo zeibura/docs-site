@@ -1,5 +1,5 @@
 #! /bin/sh
 
-echo "Hello World"
+echo "CHANGELOG SCRIPT GOES HERE"
 
 exit 0
