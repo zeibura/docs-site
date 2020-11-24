@@ -27,3 +27,4 @@ docs-site
 .classpath
 .history
 .report.*.json
+~$*.pptx
