@@ -135,6 +135,18 @@ To register your service with API ML, use the following procedure.
     });
     
    ```
+   To make sure that your application will automatically unregister from Eureka once shut down, you can use the `unregisterFromEureka()` function, like shown in the example below.
+   
+   **Example:**
+       
+   ```js
+   process.on('SIGINT', signal => {
+               apiLayerService.unregisterFromEureka();
+               httpsServer.close(() => {
+                   process.exit(0);
+               });
+           });                  
+   ``` 
 2. Start your Node.js service and verify that the service is registered to the Zowe API Mediation Layer.
 
 ## Validating the discoverability of your API service by the Discovery Service
