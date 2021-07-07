@@ -68,3 +68,5 @@ The `instance.env` file sets the location of the `<RUNTIME_DIRECTORY>` as well a
 ### KEYSTORE_DIRECTORY
 
 Zowe uses certificates to encrypt data as well as a truststore.  The keystore directory `<KEYSTORE_DIRECTORY>` controls where the certificates are located, either in a JavaKeystore or a z/OS keyring.  A `<KEYSTORE_DIRECTORY>` is created by using the script `<RUNTIME_DIR>/bin/zowe-setup-certificates.sh`.
+
+This is a test.
