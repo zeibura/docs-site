@@ -114,3 +114,34 @@ Once complete, you can open your browser and view the doc site locally at [http:
 ## Thank you!
 
 We appreciate your contributions to our documentation!
+
+## Adding videos to docs 
+
+You can add videos to Zowe docs to better illustrate a concept or task. Demo videos for Zowe docs should be uploaded to the [zowe](https://www.youtube.com/channel/UCLESs43zf9ecKBHpgQlR-bw) Youtube channel. 
+
+Once you have the video available, create an issue [Add Video]() and fill in the video information in the issue template. The reviewer will review the information, upload it to the Zowe Youtube channel, and provide the link as a comment once it's published. 
+
+### Video guidelines
+
+**Uploading videos to the Youtube channel**
+
+- You can add a link to the corresponding doc chapter in the description section of the video. 
+- Associate the video with a playlist. Each component and incubator project has its playlist. 
+
+**Embedding videos in the docs** 
+
+- When you embed the video in the docs, add an introduction sentence to lead users into the video for better accessibility. For example, 
+
+  ```
+  The following video walks you through the process of creating certificates.
+  ``` 
+
+- You can use the following code snippet to embed a video in Zowe docs. Ensure that you include a title for the video.
+
+  ```
+  <iframe class="embed-responsive-item" id="youtubeplayer" title="Zowe overview demo" type="text/html" width="640" height="390" src="https://www.youtube.com/embed/7XpOjREP8JU" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen> </iframe>
+  ```
+
+**Versioning of videos**
+
+Videos can be out of date. 
